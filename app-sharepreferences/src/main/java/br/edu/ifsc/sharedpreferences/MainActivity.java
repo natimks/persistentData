@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     final static String DEFAULT_VALUE="";
@@ -22,17 +23,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        String text = sharedPreferences.getString("text",DEFAULT_VALUE);
-        textEd.setText(text);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        String text = sharedPreferences.getString("text",DEFAULT_VALUE);
-        textEd.setText(text);
+        if(sharedPreferences.contains("text")){
+            String text = sharedPreferences.getString("text",DEFAULT_VALUE);
+            textEd.setText(text);
+        }else{
+            Toast.makeText(this,"Texto não encontrado", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -42,13 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         editor.putString("text",textEd.getText().toString());
         editor.commit();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        editor.putString("text",textEd.getText().toString());
-        editor.commit();
+        Toast.makeText(this,"Texto salvo", Toast.LENGTH_LONG).show();
     }
 }
