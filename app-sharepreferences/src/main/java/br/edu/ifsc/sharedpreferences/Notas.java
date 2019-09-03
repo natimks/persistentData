@@ -1,28 +1,25 @@
 package br.edu.ifsc.sharedpreferences;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 
 public class Notas {
     Context context;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor sharedEditor;
+
     final static String DEFAULT_VALUE="";
+
+    SQLiteDatabase db;
+    public static final String SQLDATABASE= "database";
 
     public Notas(Context context){
         this.context=context;
-        sharedPreferences =context.getSharedPreferences("data",context.MODE_PRIVATE);
-        sharedEditor = sharedPreferences.edit();
+        db = context.openOrCreateDatabase(SQLDATABASE, context.MODE_PRIVATE,null);
+        db.execSQL("CREATE TABLE notas (id INTEGER primary key AUTOINCREMENT, nota varchar)");
     }
     public boolean salvar(String texto){
-        sharedEditor.putString("text",texto);
-        return sharedEditor.commit();
+        return true;
     }
     public String recuperar(){
-        if(sharedPreferences.contains("text")){
-            String text = sharedPreferences.getString("text",DEFAULT_VALUE);
-            return  text;
-        }
         return DEFAULT_VALUE;
     }
 }
